@@ -1,4 +1,5 @@
 import telebot
+import os
 from network import load_model, classify_image
 
 TOKEN = '5129375580:AAHrcxtW24Pa4zDfkAkByx-SAj-fK6jS9gw'
@@ -26,10 +27,12 @@ def handle_text(message):
         result = classify_image(name, model)
         print(result)
         print(type(result))
-        # bot.send_photo(message.chat.id, img)
         text = '\n'.join(result)
         print(text)
         bot.send_message(message.chat.id, 'Thank you! \n Top 5 categories for your image: \n' + text)
+        os.remove(name)
+    if message.content_type == 'text':
+        bot.send_message(message.chat.id, 'Please, send me a photo')
 
 
 bot.polling(none_stop=True, interval=0)
